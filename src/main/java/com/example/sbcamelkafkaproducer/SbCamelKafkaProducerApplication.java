@@ -10,4 +10,8 @@ public class SbCamelKafkaProducerApplication {
         SpringApplication.run(SbCamelKafkaProducerApplication.class, args);
     }
 
+
+
+
+
 }

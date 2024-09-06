@@ -41,16 +41,35 @@ public class MyRoute extends RouteBuilder {
                         exchange.getIn().setBody(exchange.getIn().getHeader("log" ,String.class));
                     }
                 })
-                .to("kafka:{{topic}}?brokers={{broker}}");
+               //.to("kafka:{{topic}}?brokers={{broker}}");
+                .to("kafka:{{topic}}?brokers={{broker}}&sslKeystoreLocation=/Users/abvishno/IdeaProjects/sb-camel-kafka-producer/src/main/resources/user.jks" +
+                        "&sslKeystorePassword=password" +
+                        "&sslTruststoreLocation=/Users/abvishno/IdeaProjects/sb-camel-kafka-producer/src/main/resources/ca.jks" +
+                        "&sslTruststorePassword=password" +
+                        "&sslKeyPassword=password" +
+                        "&securityProtocol=SSL");
 
         // Kafka Consumer
-        from("kafka:{{topic}}?brokers={{broker}}")
+       /* from("kafka:{{topic}}?brokers={{broker}}")
+                .log("Message received from Kafka : ${body}")
+                .log("    on the topic ${headers[kafka.TOPIC]}")
+                .log("    on the partition ${headers[kafka.PARTITION]}")
+                .log("    with the offset ${headers[kafka.OFFSET]}")
+                .log("    with the key ${headers[kafka.KEY]}");*/
+
+
+        from("kafka:{{topic}}?brokers={{broker}}&sslKeystoreLocation=/Users/abvishno/IdeaProjects/sb-camel-kafka-producer/src/main/resources/user.jks" +
+                "&sslKeystorePassword=password" +
+                "&sslKeyPassword=password" +
+                "&sslTruststoreLocation=/Users/abvishno/IdeaProjects/sb-camel-kafka-producer/src/main/resources/ca.jks" +
+                "&sslTruststorePassword=password" +
+                "&securityProtocol=SSL")
+      // from("kafka:{{topic}}?brokers={{broker}}")
                 .log("Message received from Kafka : ${body}")
                 .log("    on the topic ${headers[kafka.TOPIC]}")
                 .log("    on the partition ${headers[kafka.PARTITION]}")
                 .log("    with the offset ${headers[kafka.OFFSET]}")
                 .log("    with the key ${headers[kafka.KEY]}");
-
 
       /*  from("kafka:{{topic.debezium}}?brokers={{broker}}")
                 .log("Message received from Kafka : ${body}")
